@@ -17,3 +17,12 @@ urlpatterns = [
     path('books/', views.list_books, name='list_books'),
     # other URL patterns for your app
 ]
+
+#configuring the url pattern 
+
+urlpatterns = [
+    path('admin-view/', views.admin_view, name='admin_view'),
+    path('librarian-view/', views.librarian_view, name='librarian_view'),
+    path('member-view/', views.member_view, name='member_view'),
+    # other URL patterns
+]
