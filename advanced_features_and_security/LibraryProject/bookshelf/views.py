@@ -46,3 +46,23 @@ class EditDocumentView(PermissionRequiredMixin, UpdateView):
     model = Document
     fields = ['title', 'content']
     permission_required = 'book_list.can_edit'
+from .models import Book
+
+def search_books(request):
+    query = request.GET.get('q', '')
+    books = Book.objects.filter(title__icontains=query)
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
+
+from .forms import BookForm
+
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = BookForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
