@@ -28,7 +28,7 @@ for group_name, perms in permissions.items():
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
 
-@permission_required('your_app.can_edit', raise_exception=True)
+@permission_required('book_list.can_edit', raise_exception=True)
 def edit_document(request, document_id):
     # Logic to edit the document
     pass
@@ -45,4 +45,4 @@ from bookshelf.models import Document
 class EditDocumentView(PermissionRequiredMixin, UpdateView):
     model = Document
     fields = ['title', 'content']
-    permission_required = 'your_app.can_edit'
+    permission_required = 'book_list.can_edit'
