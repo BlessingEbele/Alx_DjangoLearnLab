@@ -23,7 +23,40 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c1(f@6$1$nj=%b&0@c1$5@oai_6f))q%*hk-n4w-awriw$$k*!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = False
+
+
+SECURE_SSL_REDIRECT = True
+
+
+#started here
+# Instruct browsers to access the site via HTTPS for one year
+SECURE_HSTS_SECONDS = 31536000
+
+# Include all subdomains in the HSTS policy
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Enable HSTS preloading
+SECURE_HSTS_PRELOAD = True
+
+
+
+# Ensure cookies are only transmitted over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
+
+# Prevent your site from being framed to protect against clickjacking
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent browsers from sniffing MIME types
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser XSS protection
+SECURE_BROWSER_XSS_FILTER = True
+
 
 ALLOWED_HOSTS = []
 
@@ -41,6 +74,8 @@ INSTALLED_APPS = [
     'relationship_app',
 ]
 
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -49,6 +84,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware'
+
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -126,3 +163,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'apis.google.com')
+CSP_IMG_SRC = ("'self'", 'cdn.example.com')
