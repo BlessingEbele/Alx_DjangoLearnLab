@@ -2,5 +2,5 @@ from django import forms
 
 class ExampleForm(forms.ModelForm):
     class Meta:
-        model = Book
+        model = book
         fields = ['title', 'author', 'description']
