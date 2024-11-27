@@ -31,6 +31,8 @@ class MyModelViewSet(viewsets.ModelViewSet):
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .permissions import IsAuthorOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 class BookListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
@@ -46,3 +48,9 @@ class BookRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly,IsAdminUser]
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+
+class UserListView(generics.ListAPIView):
+    ...
+    filter_backends = [DjangoFilterBackend]
+

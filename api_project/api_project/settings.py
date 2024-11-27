@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'api',
     'rest_framework.authtoken',
     'rest_framework.authentication.TokenAuthentication', 
-    'rest_framework.permissions.IsAuthenticated', 
+    'rest_framework.permissions.IsAuthenticated',
+    'django_filters',
+     
     
 
     
