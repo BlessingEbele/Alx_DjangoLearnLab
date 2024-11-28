@@ -33,3 +33,21 @@ class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class BookCreateView(generics.CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    def perform_create(self, serializer):
+        # Custom logic before saving the object
+        serializer.save()
+
+
+"""
+BookListView: Lists all books.
+BookDetailView: Retrieves details of a single book by ID.
+BookCreateView: Allows authenticated users to create a new book.
+BookUpdateView: Allows authenticated users to update an existing book.
+BookDeleteView: Allows authenticated users to delete a book.
+"""
