@@ -85,7 +85,10 @@ class BookAPITests(APITestCase):
         self.client.logout()  # Ensure no user is logged in
         response = self.client.post(self.list_url, data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
+        
+        self.client.login()
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_401_AUTHORIZED)
 
  """Running Tests
 1. Ensure you are in the project root directory.
