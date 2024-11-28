@@ -7,4 +7,13 @@ urlpatterns = [
     path('books/create/', BookCreateView.as_view(), name='book-create'),
     path('books/update/', BookUpdateView.as_view(), name='book-update'),
     path('books/delete/', BookDeleteView.as_view(), name='book-delete'),
+    path('books/', BookListView.as_view(), name='book-list'),
 ]
+
+
+"""
+BookListView:
+- Supports filtering by 'title', 'author__name', and 'publication_year'.
+- Allows searching by 'title' and 'author__name'.
+- Enables ordering by 'title' and 'publication_year', with a default ordering of 'title'.
+"""
