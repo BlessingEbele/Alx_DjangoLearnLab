@@ -30,10 +30,13 @@ class CommentForm(forms.ModelForm):
         
 #this will enable the users to add or edit tags fro a post
 from .models import Tag 
+from taggit.forms import TagWidget
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(help_text="Add tags separated by commas.")
-    
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+        widgets = {
+            'tags': TagWidget(),  # Use TagWidget for the tags field
+        }
+

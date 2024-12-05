@@ -42,13 +42,19 @@ class Comment(models.Model):
     
 
 #tag model and association
+
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
     def __str__(self):
         return self.name
 
+
+from taggit.managers import TaggableManager 
 class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    tags = models.ManyToManyField(Tag, related_name='posts')
+    tags = TaggableManager()
+
+    def __str__(self):
+        return self.title
     ...
