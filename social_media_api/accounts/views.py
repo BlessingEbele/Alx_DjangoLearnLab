@@ -108,3 +108,20 @@ class UnfollowUserView(APIView):
             except CustomUser.DoesNotExist:
                 return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
         return Response({"error": "Username is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+from rest_framework import generics, permissions
+from .models import CustomUser
+from .serializers import CustomUserSerializer
+
+class CustomUserListView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]  # Ensures only authenticated users can access this view
+
+    def get(self, request, *args, **kwargs):
+        """
+        Retrieve a list of all users.
+        Only authenticated users can access this endpoint.
+        """
+        users = CustomUser.objects.all()  # Retrieves all CustomUser objects
+        serializer = CustomUserSerializer(users, many=True)  # Serialize the data
+        return Response(serializer.data)

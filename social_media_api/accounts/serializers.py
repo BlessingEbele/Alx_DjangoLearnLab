@@ -37,6 +37,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+from rest_framework import serializers
+from .models import CustomUser
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'date_of_birth', 'profile_photo']  # Adjust fields as necessary
+
+
+
 class LoginSerializer(serializers.Serializer):
     # CharField for login credentials
     username = serializers.CharField(max_length=150, required=True)
