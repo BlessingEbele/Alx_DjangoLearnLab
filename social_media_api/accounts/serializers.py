@@ -8,6 +8,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     # Include CharField for password and confirmation
     password = serializers.CharField(write_only=True, min_length=8, required=True)
     confirm_password = serializers.CharField(write_only=True, required=True)
+    confirm_password = serializers.CharField()
 
     class Meta:
         model = User
