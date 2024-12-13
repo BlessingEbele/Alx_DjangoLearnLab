@@ -265,3 +265,19 @@ social_media_api/
     |-- urls.py
 ```
 
+
+'''Document the functionality and endpoints. Here's a simple example:
+
+Post Like/Unlike:
+POST /posts/<int:pk>/like/: Like a post.
+Request: Requires authentication.
+Response: {"detail": "Post liked successfully"}
+POST /posts/<int:pk>/unlike/: Unlike a post.
+Request: Requires authentication.
+Response: {"detail": "Post unliked successfully"}
+Notifications:
+GET /notifications/: List unread notifications for the authenticated user.
+Response: List of notifications (e.g., "User X liked your post").
+POST /notifications/<int:pk>/mark_read/: Mark a notification as read.
+Response: {"detail": "Notification marked as read."}
+'''
