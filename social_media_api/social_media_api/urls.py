@@ -16,12 +16,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import RegisterUserView
+from social_media_api.views import RegisterUserView
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls')),
     path('register/', RegisterUserView.as_view(), name='register'),
+     path('accounts/', include('accounts.urls')),
+    path('posts/', include('posts.urls')),
 ]
 
+
+from django.urls import path
+from .views import RegisterUserView, LoginUserView, UserProfileView, PasswordResetView, api_overview
+
+urlpatterns = [
+    path("login/", LoginUserView.as_view(), name="login"),
+    path("profile/", UserProfileView.as_view(), name="profile"),
+    path("reset-password/", PasswordResetView.as_view(), name="reset-password"),
+    path("", api_overview, name="api-overview"),
+]
