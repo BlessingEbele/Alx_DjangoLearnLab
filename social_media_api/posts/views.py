@@ -82,3 +82,64 @@ class PostListView(generics.GenericAPIView):
         
         # Return the serialized data
         return Response(serializer.data)
+
+
+# posts/views.py
+
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
+from .models import Post, Like
+from .serializers import PostSerializer
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
+
+class PostLikeView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk, *args, **kwargs):
+        user = request.user
+        try:
+            post = Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
+            raise NotFound('Post not found')
+
+        # Prevent the user from liking the post again
+        if Like.objects.filter(user=user, post=post).exists():
+            return Response({"detail": "You have already liked this post."}, status=400)
+
+        # Create a like
+        like = Like.objects.create(user=user, post=post)
+
+        # Create a notification for the post author
+        notification_verb = f'{user.username} liked your post'
+        notification = Notification.objects.create(
+            recipient=post.author,
+            actor=user,
+            verb=notification_verb,
+            target=post,
+            target_content_type=ContentType.objects.get_for_model(Post)
+        )
+
+        return Response({"detail": "Post liked successfully"}, status=201)
+
+class PostUnlikeView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk, *args, **kwargs):
+        user = request.user
+        try:
+            post = Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
+            raise NotFound('Post not found')
+
+        # Prevent the user from unliking a post they haven't liked
+        like = Like.objects.filter(user=user, post=post).first()
+        if not like:
+            return Response({"detail": "You have not liked this post."}, status=400)
+
+        # Remove the like
+        like.delete()
+
+        return Response({"detail": "Post unliked successfully"}, status=204)
+
