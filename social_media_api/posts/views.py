@@ -53,3 +53,32 @@ def user_feed(request):
     posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from .models import Post
+from .serializers import PostSerializer
+from django.contrib.auth.models import User
+
+class PostListView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]  # Ensures only authenticated users can access the view
+
+    def get(self, request, *args, **kwargs):
+        """
+        Retrieve a list of posts from users that the authenticated user is following.
+        """
+        # Retrieve the authenticated user
+        user = request.user
+        
+        # Get the list of users that the authenticated user is following
+        following_users = user.following.all()  # Assuming there's a `following` relationship defined on the user model
+
+        # Filter posts by those authors the user is following
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')  # Adjust order as needed
+
+        # Serialize the data
+        serializer = PostSerializer(posts, many=True)
+        
+        # Return the serialized data
+        return Response(serializer.data)
