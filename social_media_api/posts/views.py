@@ -100,7 +100,7 @@ class PostLikeView(generics.GenericAPIView):
 
     def post(self, request, pk, *args, **kwargs):
         # Get the post object or raise a 404 if not found
-        post = get_object_or_404(Post, pk=pk)  # This ensures we get the Post or raise a 404 error
+        post = generics.get_object_or_404(Post, pk=pk)  # This ensures we get the Post or raise a 404 error
 
         # Create or retrieve the like object
         like, created = Like.objects.get_or_create(user=request.user, post=post)  # Ensures no duplicate like for the same user on the same post
@@ -125,7 +125,7 @@ class PostUnlikeView(generics.GenericAPIView):
 
     def post(self, request, pk, *args, **kwargs):
         # Get the post object or raise a 404 if not found
-        post = get_object_or_404(Post, pk=pk)  # This ensures we get the Post or raise a 404 error
+        post = generics.get_object_or_404(Post, pk=pk)  # This ensures we get the Post or raise a 404 error
 
         # Find and delete the like object
         like = Like.objects.filter(user=request.user, post=post).first()
